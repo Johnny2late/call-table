@@ -206,7 +206,7 @@ function App() {
 
           {error && <div className="error">{error.message}</div>}
 
-          <div className={`table-body${loadMore ? 'table-body--load' : ''}`} ref={tableBodyRef}>
+          <div className={`table-body${loadMore ? ' table-body--load' : ''}`} ref={tableBodyRef}>
             {list.length > 0 &&
               Object.keys(groupedList).map(date => {
                 if (date === 'Сегодня') {

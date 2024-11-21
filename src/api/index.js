@@ -4,7 +4,7 @@ export async function fetchList(
   inOut = ' ',
   sort = 'date',
   offset,
-  limit = 50,
+  limit = 10,
 ) {
   const response = await fetch(
     `https://api.skilla.ru/mango/getList?date_start=${dateStart}&date_end=${dateEnd}${inOut ? '&in_out=' + inOut : ''}&limit=${limit}&offset=${offset}&sort_by=${sort}`,

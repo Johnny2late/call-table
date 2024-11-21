@@ -1,4 +1,5 @@
 import React, { useState, memo, useRef, useEffect } from 'react'
+import { useMask } from '@react-input/mask'
 
 import { useClickOutside } from '../../hooks'
 import { isValidDate } from '../../helpers'
@@ -19,7 +20,10 @@ const Select = memo(
     const mask = '__.__.__-__.__.__'
 
     const selectRef = useRef(null)
-    const inputRef = useRef(null)
+    const inputRef = useMask({
+      mask: mask,
+      replacement: { _: /\d/ },
+    })
 
     const [date, setDate] = useState('')
     const [invalidDate, setInvalidDate] = useState(false)
@@ -35,15 +39,6 @@ const Select = memo(
         return `20${year}-${month}-${day}`
       })
       return { from, to }
-    }
-
-    const handleDate = e => {
-      if (e.target.value.length > mask.length) {
-        e.target.value.slice(0, -1)
-        return
-      } else {
-        setDate(e.target.value)
-      }
     }
 
     const handleSelect = (item, i) => {
@@ -167,7 +162,7 @@ const Select = memo(
                         value={date}
                         ref={inputRef}
                         placeholder={mask}
-                        onChange={handleDate}
+                        onChange={e => setDate(e.target.value)}
                       />
                       <Calendar />
                     </div>

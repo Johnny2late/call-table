@@ -41,9 +41,17 @@ const Select = memo(
       return { from, to }
     }
 
+    const isDateRangeValid = (from, to) => {
+      const fromDate = new Date(from)
+      const toDate = new Date(to)
+
+      return fromDate <= toDate
+    }
+
     const handleSelect = (item, i) => {
       setSelct(item)
       setSelecIndex(i)
+      setDate('')
       if (item.isDate) return
       onChange(item)
       setIsOpen(false)
@@ -66,6 +74,7 @@ const Select = memo(
       if (!list[newIndex].isDate) onChange(list[newIndex])
       setSelecIndex(newIndex)
       setSelct(list[newIndex])
+      setDate('')
     }
 
     useEffect(() => {
@@ -87,12 +96,13 @@ const Select = memo(
       const parseDate = parseDateRange(date)
       const isValidFrom = isValidDate(parseDate.from)
       const isValidTo = isValidDate(parseDate.to)
+      const isValidSlot = isDateRangeValid(parseDate.from, parseDate.to)
       const isFullDate = date.length === mask.length
 
-      if (isFullDate && (!isValidFrom || !isValidTo)) {
+      if (isFullDate && (!isValidFrom || !isValidTo || !isValidSlot)) {
         setInvalidDate(true)
       }
-      if (isFullDate && isValidFrom && isValidTo) {
+      if (isValidSlot && isFullDate && isValidFrom && isValidTo) {
         onChange({ ...list[selecIndex], slot: parseDate })
       }
     }, [date, select])
